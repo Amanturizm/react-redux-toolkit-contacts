@@ -8,7 +8,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         <Navbar />
       </header>
 
-      <main className="container-fluid" style={{ paddingTop: 60 }}>
+      <main className="container-fluid" style={{ paddingTop: 56 }}>
         {children}
       </main>
     </>

@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { fetchAll } from "./ContactsThunk";
 
 interface State {
-  contacts: string[];
+  contacts: IContact[];
 }
 
 const initialState: State = {
@@ -13,7 +14,9 @@ const contactsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-
+    builder.addCase(fetchAll.fulfilled, (state, { payload: contacts }) => {
+      state.contacts = contacts;
+    });
   }
 });
 
