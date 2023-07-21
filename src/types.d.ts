@@ -11,6 +11,6 @@ interface IContactMutation extends IContact {
 
 type TContactApi = Omit<IContactMutation, 'id'>;
 
-interface IContactApi {
+interface IContactsApi {
   [id: string]: TContactApi;
 }

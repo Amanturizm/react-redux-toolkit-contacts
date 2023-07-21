@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchAll } from "./ContactsThunk";
+import {fetchAll, fetchOne} from "./ContactsThunk";
 
 interface State {
   contacts: IContact[];
+  currentContact: TContactApi | null;
 }
 
 const initialState: State = {
   contacts: [],
+  currentContact: null,
 }
 
 const contactsSlice = createSlice({
@@ -16,6 +18,10 @@ const contactsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchAll.fulfilled, (state, { payload: contacts }) => {
       state.contacts = contacts;
+    });
+
+    builder.addCase(fetchOne.fulfilled, (state, { payload: currentContact }) => {
+      state.currentContact = currentContact;
     });
   }
 });
