@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hook";
-import {fetchAll, fetchOne} from "../../store/Contacts/ContactsThunk";
+import { fetchAll, fetchOne } from "../../store/Contacts/ContactsThunk";
 import ContactsItem from "../../components/ContactsItem/ContactsItem";
-import {Outlet, useNavigate, useParams} from "react-router-dom";
 
 const Contacts = () => {
   const navigate = useNavigate();

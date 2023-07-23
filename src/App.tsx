@@ -13,6 +13,7 @@ const App = () => (
         <Route path="/contacts/:id" element={<ContactInfoModal />} />
       </Route>
       <Route path="/contacts/new-contact" element={<NewContactForm />} />
+      <Route path="/contacts/edit/:id" element={<NewContactForm isEdit />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>

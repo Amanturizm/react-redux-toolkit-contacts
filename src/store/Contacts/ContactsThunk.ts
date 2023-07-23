@@ -24,3 +24,10 @@ export const createOne = createAsyncThunk<void, TContactApi>(
     await axiosApi.post('/contacts.json', newContact);
   }
 );
+
+export const editOne = createAsyncThunk<void, { id: string, currentContact: TContactApi }>(
+  'contacts/editOne',
+  async (arg) => {
+    await axiosApi.put(`/contacts/${arg.id}.json`, arg.currentContact);
+  }
+);

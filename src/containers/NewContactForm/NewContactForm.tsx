@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch } from "../../app/hook";
+import { createOne, editOne } from "../../store/Contacts/ContactsThunk";
+import axiosApi from "../../axiosApi";
 import NewContactFormItem from "../../components/NewContactFormItem/NewContactFormItem";
 import defaultImage from '../../assets/no-image.png';
-import {useAppDispatch} from "../../app/hook";
-import {createOne} from "../../store/Contacts/ContactsThunk";
-import {useNavigate} from "react-router-dom";
 
 type TContactForm = Omit<IContactMutation, 'id'>;
 
@@ -14,11 +15,28 @@ const initialState: TContactForm = {
   photo: ''
 }
 
-const NewContactForm = () => {
+const NewContactForm: React.FC<{isEdit?: boolean}> = ({ isEdit }) => {
   const dispatch = useAppDispatch();
+
+  const { id } = useParams() as { id: string };
   const navigate = useNavigate();
 
   const [formInputs, setFormInputs] = useState<TContactForm>(initialState);
+
+  const fetchData = useCallback(async (id: string) => {
+    try {
+      const { data } = await axiosApi.get(`/contacts/${id}.json`);
+      setFormInputs(data);
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isEdit) {
+      void fetchData(id);
+    }
+  }, [isEdit, fetchData, id]);
 
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -34,7 +52,11 @@ const NewContactForm = () => {
     } else if (formInputs.phone.length < 9) {
       alert('Введите номер!');
     } else {
-      dispatch(createOne(formInputs));
+      if (!isEdit) {
+        dispatch(createOne(formInputs));
+      } else {
+        dispatch(editOne({ id, currentContact: formInputs }))
+      }
       navigate('/');
     }
   };
@@ -54,7 +76,7 @@ const NewContactForm = () => {
         Photo preview: <img src={formInputs.photo || defaultImage} alt="img" className="w-25" />
       </div>
 
-      <button className="btn btn-primary" style={{ width: 100 }}>Create</button>
+      <button className="btn btn-primary" style={{ width: 100 }}>{isEdit ? 'Edit' : 'Create'}</button>
     </form>
   );
 };
