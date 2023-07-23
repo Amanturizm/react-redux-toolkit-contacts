@@ -31,3 +31,10 @@ export const editOne = createAsyncThunk<void, { id: string, currentContact: TCon
     await axiosApi.put(`/contacts/${arg.id}.json`, arg.currentContact);
   }
 );
+
+export const deleteOne = createAsyncThunk<void, string>(
+  'contacts/deleteOne',
+  async (id) => {
+    await axiosApi.delete(`/contacts/${id}.json`);
+  }
+);

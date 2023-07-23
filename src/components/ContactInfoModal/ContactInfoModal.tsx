@@ -1,16 +1,28 @@
-import React from 'react';
-import {Link, useParams} from "react-router-dom";
-import { useAppSelector } from "../../app/hook";
+import React, {useState} from 'react';
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../app/hook";
 import CloseButton from "../CloseButton/CloseButton";
 import defaultImage from '../../assets/no-image.png';
 import editIcon from '../../assets/edit-icon.png';
 import deleteIcon from '../../assets/delete-icon.png';
+import DeleteConfirm from "../DeleteConfirm/DeleteConfirm";
+import {deleteOne} from "../../store/Contacts/ContactsThunk";
 
 const ContactInfoModal = () => {
-  const { id } = useParams();
+  const dispatch = useAppDispatch();
   const { currentContact } = useAppSelector(state => state.contacts);
 
+  const { id } = useParams() as { id: string };
+  const navigate = useNavigate();
+
+  const [isConfirm, setIsConfirm] = useState<boolean>(false);
+
   if (!currentContact) return null;
+
+  const deleteContact = async () => {
+    await dispatch(deleteOne(id));
+    navigate('/contacts');
+  };
 
   return (
     <div
@@ -40,11 +52,15 @@ const ContactInfoModal = () => {
           <Link to={`/contacts/edit/${id}`}>
             <img src={editIcon} alt="edit-img" style={{ width: 25 }}  />
           </Link>
-          <Link to="">
-            <img src={deleteIcon} alt="delete-img" style={{ width: 25 }} />
-          </Link>
+
+          <img src={deleteIcon} alt="delete-img" style={{ width: 25, cursor: 'pointer' }} onClick={() => setIsConfirm(true)} />
         </div>
         <CloseButton to="/contacts" />
+        {
+          isConfirm ?
+            <DeleteConfirm clickNo={() => setIsConfirm(false)} clickYes={deleteContact} />
+            : null
+        }
       </div>
     </div>
   );
