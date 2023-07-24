@@ -7,10 +7,11 @@ import editIcon from '../../assets/edit-icon.png';
 import deleteIcon from '../../assets/delete-icon.png';
 import DeleteConfirm from "../DeleteConfirm/DeleteConfirm";
 import {deleteOne} from "../../store/Contacts/ContactsThunk";
+import Preloader from "../Preloader/Preloader";
 
 const ContactInfoModal = () => {
   const dispatch = useAppDispatch();
-  const { currentContact } = useAppSelector(state => state.contacts);
+  const { currentContact, currentContactLoading } = useAppSelector(state => state.contacts);
 
   const { id } = useParams() as { id: string };
   const navigate = useNavigate();
@@ -41,20 +42,25 @@ const ContactInfoModal = () => {
         "
         style={{ width: 600, height: 300 }}
       >
-        <img src={currentContact.photo || defaultImage} alt="img" className="h-100 rounded-start-4" />
-        <div>
-          <h1 className="text-wrap">{currentContact.name}</h1>
-          <p>{currentContact.phone}</p>
-          <p>{currentContact.email}</p>
-        </div>
+        {
+          currentContactLoading ? <Preloader /> :
+            <>
+              <img src={currentContact.photo || defaultImage} alt="img" className="h-100 rounded-start-4" />
+              <div className="m-auto">
+                <h1>{currentContact.name}</h1>
+                <p>{currentContact.phone}</p>
+                <p>{currentContact.email}</p>
+              </div>
 
-        <div className="d-flex gap-2 position-absolute top-0 end-0 me-5" style={{ marginTop: 15 }}>
-          <Link to={`/contacts/edit/${id}`}>
-            <img src={editIcon} alt="edit-img" style={{ width: 25 }}  />
-          </Link>
+              <div className="d-flex gap-2 position-absolute top-0 end-0 me-5" style={{ marginTop: 15 }}>
+                <Link to={`/contacts/edit/${id}`}>
+                  <img src={editIcon} alt="edit-img" style={{ width: 25 }}  />
+                </Link>
 
-          <img src={deleteIcon} alt="delete-img" style={{ width: 25, cursor: 'pointer' }} onClick={() => setIsConfirm(true)} />
-        </div>
+                <img src={deleteIcon} alt="delete-img" style={{ width: 25, cursor: 'pointer' }} onClick={() => setIsConfirm(true)} />
+              </div>
+            </>
+        }
         <CloseButton to="/contacts" />
         {
           isConfirm ?

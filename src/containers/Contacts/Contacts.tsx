@@ -3,6 +3,7 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hook";
 import { fetchAll, fetchOne } from "../../store/Contacts/ContactsThunk";
 import ContactsItem from "../../components/ContactsItem/ContactsItem";
+import Preloader from "../../components/Preloader/Preloader";
 
 const Contacts = () => {
   const navigate = useNavigate();
@@ -10,16 +11,14 @@ const Contacts = () => {
 
   const dispatch = useAppDispatch();
 
-  const { contacts } = useAppSelector(state => state.contacts);
+  const { contacts, contactsLoading } = useAppSelector(state => state.contacts);
 
   useEffect(() => {
     dispatch(fetchAll());
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchOne(id));
-    }
+    if (id) dispatch(fetchOne(id));
   }, [id, dispatch]);
 
   const viewContact = (id: string) => {
@@ -31,9 +30,12 @@ const Contacts = () => {
     <>
       <div className="m-5">
         {
-          contacts.map(contact => (
-            <ContactsItem contact={contact} onClick={() => viewContact(contact.id)} key={contact.id} />
-          ))
+          contactsLoading && !id ?
+            <Preloader />
+            :
+            contacts.map(contact => (
+              <ContactsItem contact={contact} onClick={() => viewContact(contact.id)} key={contact.id} />
+            ))
         }
       </div>
 
