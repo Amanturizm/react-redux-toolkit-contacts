@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {createOne, deleteOne, editOne, fetchAll, fetchOne} from "./ContactsThunk";
+import { createOne, deleteOne, editOne, fetchAll, fetchOne } from "./ContactsThunk";
 
 interface State {
   contacts: IContact[];

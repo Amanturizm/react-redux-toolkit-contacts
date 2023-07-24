@@ -2,9 +2,9 @@ import React from 'react';
 import { Route, Routes, useLocation } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import Contacts from "./containers/Contacts/Contacts";
-import NotFound from "./components/NotFound/NotFound";
-import NewContactForm from "./containers/NewContactForm/NewContactForm";
 import ContactInfoModal from "./components/ContactInfoModal/ContactInfoModal";
+import NewContactForm from "./containers/NewContactForm/NewContactForm";
+import NotFound from "./components/NotFound/NotFound";
 
 const App = () => (
   <Layout>

@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {Link, useNavigate, useParams} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../app/hook";
+import React, { useState } from 'react';
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hook";
+import { deleteOne } from "../../store/Contacts/ContactsThunk";
 import CloseButton from "../CloseButton/CloseButton";
+import DeleteConfirm from "../DeleteConfirm/DeleteConfirm";
+import Preloader from "../Preloader/Preloader";
 import defaultImage from '../../assets/no-image.png';
 import editIcon from '../../assets/edit-icon.png';
 import deleteIcon from '../../assets/delete-icon.png';
-import DeleteConfirm from "../DeleteConfirm/DeleteConfirm";
-import {deleteOne} from "../../store/Contacts/ContactsThunk";
-import Preloader from "../Preloader/Preloader";
 
 const ContactInfoModal = () => {
   const dispatch = useAppDispatch();
